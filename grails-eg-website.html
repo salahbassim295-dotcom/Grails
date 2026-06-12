@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grails — Own your grail</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #0D0B09;
+      --paper: #F2EDE6;
+      --muted: rgba(242,237,230,0.45);
+      --dim: rgba(242,237,230,0.12);
+      --tobacco: #8B5E3C;
+      --cream: #D4B896;
+      --burgundy: #6B2030;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--ink);
+      color: var(--paper);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 2.5rem;
+      position: sticky;
+      top: 0;
+      background: var(--ink);
+      z-index: 100;
+      border-bottom: 0.5px solid var(--dim);
+    }
+
+    .wordmark {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      letter-spacing: 0.2em;
+      font-weight: 400;
+      color: var(--paper);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--cream); }
+
+    .nav-icons {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .nav-icons a {
+      color: var(--muted);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-icons a:hover { color: var(--cream); }
+
+    /* ─── HERO ─── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 92vh;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 3.5rem 2.5rem;
+      border-right: 0.5px solid var(--dim);
+    }
+
+    .kicker {
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--cream);
+      margin-bottom: 1.8rem;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.2rem, 6vw, 6rem);
+      line-height: 0.95;
+      font-weight: 400;
+      margin-bottom: 2rem;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--cream);
+    }
+
+    .hero-body {
+      font-size: 0.82rem;
+      line-height: 1.8;
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 320px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      background: var(--paper);
+      color: var(--ink);
+      border: none;
+      padding: 0.9rem 1.8rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: background 0.2s;
+    }
+
+    .btn-primary:hover { background: var(--cream); }
+
+    .btn-ghost {
+      background: none;
+      border: 0.5px solid var(--dim);
+      color: var(--muted);
+      padding: 0.9rem 1.6rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.2s;
+    }
+
+    .btn-ghost:hover { border-color: var(--cream); color: var(--cream); }
+
+    /* ─── HERO PHOTO ─── */
+    .hero-right {
+      position: relative;
+      overflow: hidden;
+      background: #1A1410;
+    }
+
+    /*
+    ╔══════════════════════════════════════════════════════╗
+    ║  HERO PHOTO                                          ║
+    ║  Replace hero-photo.jpg with your campaign photo.   ║
+    ║  Recommended: the black leather jacket duo shot.     ║
+    ╚══════════════════════════════════════════════════════╝
+    */
+    .hero-right img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .hero-photo-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.8rem;
+      color: rgba(242,237,230,0.15);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+
+    .hero-photo-placeholder svg {
+      width: 48px;
+      height: 48px;
+      opacity: 0.15;
+    }
+
+    .drop-badge {
+      position: absolute;
+      bottom: 2rem;
+      right: 2rem;
+      border: 0.5px solid var(--dim);
+      padding: 0.85rem 1.2rem;
+      text-align: center;
+      background: rgba(13,11,9,0.6);
+      backdrop-filter: blur(4px);
+    }
+
+    .drop-badge p:first-child {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+
+    .drop-badge p:last-child {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      color: var(--cream);
+    }
+
+    /* ─── TICKER ─── */
+    .ticker-wrap {
+      border-top: 0.5px solid var(--dim);
+      border-bottom: 0.5px solid var(--dim);
+      padding: 0.9rem 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .ticker-track {
+      display: inline-block;
+      animation: ticker 24s linear infinite;
+    }
+
+    @keyframes ticker {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .ticker-track span {
+      font-size: 0.68rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 0 2.5rem;
+    }
+
+    .ticker-track span.dot { color: var(--tobacco); margin: 0; }
+
+    /* ─── COLLECTION HEADER ─── */
+    .col-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 3rem 2.5rem 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .col-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+    }
+
+    .filters {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      background: none;
+      border: 0.5px solid var(--dim);
+      color: var(--muted);
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.45rem 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active { border-color: var(--cream); color: var(--cream); }
+
+    /* ─── PRODUCT GRID ─── */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--dim);
+      margin: 0 2.5rem;
+    }
+
+    .card {
+      background: var(--ink);
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+
+    .card:hover { background: #141008; }
+
+    /* ─── CARD IMAGE ─── */
+    .card-img {
+      aspect-ratio: 3 / 4;
+      position: relative;
+      overflow: hidden;
+      background: #18140F;
+    }
+
+    /*
+    ╔══════════════════════════════════════════════════════════════╗
+    ║  PRODUCT PHOTOS — swap each src with your actual photo file ║
+    ║  Keep photos in the same folder as this HTML file.          ║
+    ╚══════════════════════════════════════════════════════════════╝
+
+      jacket-photo.jpg   → Leather Jacket card
+      jeans-photo.jpg    → Jeans card
+      polo-photo.jpg     → Jacquard Polo card
+      ringer-photo.jpg   → Ringer Tee card
+      henley-photo.jpg   → Henley card
+      crewneck-photo.jpg → Crewneck card
+    */
+    .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover .card-img img { transform: scale(1.03); }
+
+    .card-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      color: rgba(242,237,230,0.12);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .card-img-placeholder svg { width: 36px; height: 36px; }
+
+    .card-tag {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.22rem 0.55rem;
+      z-index: 1;
+    }
+
+    .tag-drop { background: #6B2030; color: #F2C0C8; }
+    .tag-new  { background: #3B4A2E; color: #A8C890; }
+
+    .swatches {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      display: flex;
+      gap: 5px;
+      z-index: 1;
+    }
+
+    .sw {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(242,237,230,0.22);
+      flex-shrink: 0;
+    }
+
+    .sw-light { border-color: rgba(242,237,230,0.5); }
+
+    /* ─── CARD BODY ─── */
+    .card-body { padding: 1.1rem 1.1rem 1.4rem; }
+
+    .card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      font-weight: 400;
+      margin-bottom: 0.2rem;
+    }
+
+    .card-sub {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-bottom: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-price { font-size: 0.85rem; color: var(--cream); }
+
+    .card-cta {
+      background: none;
+      border: 0.5px solid var(--dim);
+      color: var(--muted);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .card-cta:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+
+    /* ─── LEATHER FEATURE ─── */
+    .feature {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-top: 0.5px solid var(--dim);
+      margin-top: 4rem;
+    }
+
+    /* ─── FEATURE PHOTO ─── */
+    .feature-visual {
+      position: relative;
+      overflow: hidden;
+      background: #18140F;
+      min-height: 540px;
+    }
+
+    /*
+    ╔═════════════════════════════════════════════════════╗
+    ║  FEATURE PHOTO                                      ║
+    ║  Replace feature-photo.jpg with your best leather  ║
+    ║  jacket editorial shot (e.g. burgundy colorway).   ║
+    ╚═════════════════════════════════════════════════════╝
+    */
+    .feature-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .feature-visual-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(242,237,230,0.1);
+    }
+
+    .feature-visual-placeholder svg { width: 64px; height: 64px; }
+
+    .feature-text {
+      padding: 4rem 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-left: 0.5px solid var(--dim);
+    }
+
+    .eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--tobacco);
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      line-height: 1.1;
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+    }
+
+    .feature-title em { font-style: italic; color: var(--cream); }
+
+    .feature-body {
+      font-size: 0.82rem;
+      line-height: 1.85;
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 380px;
+      margin-bottom: 2rem;
+    }
+
+    .color-label-row {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .colors-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .color-chip {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .color-dot {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(242,237,230,0.2);
+    }
+
+    .color-chip span {
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    /* ─── ORDER SECTION ─── */
+    .order {
+      border-top: 0.5px solid var(--dim);
+      padding: 4rem 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .order-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      font-weight: 400;
+    }
+
+    .order-title em { font-style: italic; color: var(--cream); }
+
+    .order-body {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.8;
+      font-weight: 300;
+      margin-bottom: 2rem;
+    }
+
+    .steps { display: flex; flex-direction: column; gap: 1.4rem; }
+
+    .step { display: flex; gap: 1.2rem; align-items: flex-start; }
+
+    .step-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--dim);
+      line-height: 1;
+      min-width: 1.8rem;
+      font-style: italic;
+    }
+
+    .step-text p:first-child {
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+      color: var(--paper);
+    }
+
+    .step-text p:last-child {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .order-ctas { display: flex; flex-direction: column; gap: 1.2rem; }
+
+    /*
+    ╔══════════════════════════════════════════════════════════╗
+    ║  ORDER BUTTONS                                           ║
+    ║  Replace the href values with your actual links:        ║
+    ║  WhatsApp: https://wa.me/20XXXXXXXXXX                   ║
+    ║  Instagram: https://www.instagram.com/grails.eg         ║
+    ╚══════════════════════════════════════════════════════════╝
+    */
+    .btn-whatsapp {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      background: #1A3A1A;
+      border: 0.5px solid rgba(37,211,102,0.3);
+      color: #7DD87D;
+      padding: 1.1rem 1.8rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+      transition: all 0.2s;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .btn-whatsapp:hover { background: #1F4A1F; border-color: #25D366; }
+
+    .btn-instagram {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      background: none;
+      border: 0.5px solid var(--dim);
+      color: var(--muted);
+      padding: 1.1rem 1.8rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      text-decoration: none;
+      transition: all 0.2s;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .btn-instagram:hover { border-color: var(--cream); color: var(--cream); }
+
+    .order-note {
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 0.5px solid var(--dim);
+      padding: 2rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-wm {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.22em;
+      color: var(--muted);
+    }
+
+    .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+
+    .footer-links a {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--cream); }
+
+    .footer-right { font-size: 0.7rem; color: var(--dim); letter-spacing: 0.08em; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { min-height: 60vw; }
+      .hero-left { padding: 3rem 1.5rem; }
+      .product-grid { grid-template-columns: repeat(2, 1fr); margin: 0 1rem; }
+      .feature { grid-template-columns: 1fr; }
+      .feature-visual { min-height: 60vw; }
+      .feature-text { padding: 2.5rem 1.5rem; border-left: none; border-top: 0.5px solid var(--dim); }
+      .order { grid-template-columns: 1fr; gap: 2.5rem; padding: 3rem 1.5rem; }
+      .col-header { padding: 2.5rem 1.5rem 1.2rem; }
+      footer { flex-direction: column; text-align: center; }
+      .footer-links { justify-content: center; }
+    }
+
+    @media (max-width: 480px) {
+      .product-grid { grid-template-columns: 1fr; margin: 0 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAV ─── -->
+  <nav>
+    <a class="wordmark" href="#">GRAILS</a>
+    <ul class="nav-links">
+      <li><a href="#collection">Collection</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#order">Order</a></li>
+    </ul>
+    <div class="nav-icons">
+      <!-- ✏ Replace href with your actual Instagram and TikTok links -->
+      <a href="https://www.instagram.com/grails.eg" target="_blank">Instagram</a>
+      <a href="#order">Order</a>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <div class="hero-left">
+      <p class="kicker">Cairo · New drop available</p>
+      <h1 class="hero-title">Own<br>your<br><em>grail.</em></h1>
+      <p class="hero-body">Leather jackets, wide-leg jeans, jacquard polos — curated for the ones who move between worlds without explaining themselves.</p>
+      <div class="hero-actions">
+        <a class="btn-primary" href="#collection">Shop the drop</a>
+        <a class="btn-ghost" href="#order">Order via DM</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <!--
+        ╔═══════════════════════════════════════════════════════╗
+        ║  HERO PHOTO — REPLACE BELOW                          ║
+        ║  1. Put your photo file in the same folder as        ║
+        ║     this HTML file.                                  ║
+        ║  2. Change "hero-photo.jpg" to your file's name.    ║
+        ║  Recommended: black leather jacket duo, wood wall.  ║
+        ╚═══════════════════════════════════════════════════════╝
+      -->
+      <!-- <img src="hero-photo.jpg" alt="Grails campaign photo" /> -->
+
+      <!-- DELETE this placeholder block once you add your photo above -->
+      <div class="hero-photo-placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 4 0v2"/><circle cx="12" cy="13" r="3"/>
+        </svg>
+        hero-photo.jpg
+      </div>
+
+      <div class="drop-badge">
+        <p>Current drop</p>
+        <p>Leather Collection</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TICKER ─── -->
+  <div class="ticker-wrap" aria-hidden="true">
+    <div class="ticker-track">
+      <span>Statements made in leather</span><span class="dot"> · </span>
+      <span>Own your grail</span><span class="dot"> · </span>
+      <span>Cairo</span><span class="dot"> · </span>
+      <span>New drop</span><span class="dot"> · </span>
+      <span>Grails.eg</span><span class="dot"> · </span>
+      <span>Statements made in leather</span><span class="dot"> · </span>
+      <span>Own your grail</span><span class="dot"> · </span>
+      <span>Cairo</span><span class="dot"> · </span>
+      <span>New drop</span><span class="dot"> · </span>
+      <span>Grails.eg</span><span class="dot"> · </span>
+    </div>
+  </div>
+
+  <!-- ─── COLLECTION ─── -->
+  <section id="collection">
+    <div class="col-header">
+      <h2 class="col-title">The collection</h2>
+      <div class="filters">
+        <button class="filter-btn active">All</button>
+        <button class="filter-btn">Jackets</button>
+        <button class="filter-btn">Tops</button>
+        <button class="filter-btn">Bottoms</button>
+      </div>
+    </div>
+
+    <div class="product-grid">
+
+      <!-- ── LEATHER JACKET ── -->
+      <div class="card">
+        <div class="card-img">
+          <!--
+            PHOTO: jacket-photo.jpg
+            ✏ Uncomment the line below and set your file name:
+            <img src="jacket-photo.jpg" alt="Leather Jacket" />
+          -->
+          <div class="card-img-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg>
+            jacket-photo.jpg
+          </div>
+          <span class="card-tag tag-drop">Drop</span>
+          <div class="swatches">
+            <div class="sw" style="background:#5C1A26" title="Burgundy"></div>
+            <div class="sw" style="background:#1A1A1A" title="Black"></div>
+            <div class="sw sw-light" style="background:#E8D8C0" title="Beige"></div>
+            <div class="sw" style="background:#3B4A2E" title="Olive"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="card-name">Leather Jacket</p>
+          <p class="card-sub">Burgundy · Black · Beige · Olive</p>
+          <div class="card-footer">
+            <span class="card-price">EGP 1,300</span>
+            <!-- ✏ Replace href with your WhatsApp or Instagram order link -->
+            <a class="card-cta" href="#order">Order →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── JEANS ── -->
+      <div class="card">
+        <div class="card-img">
+          <!--
+            PHOTO: jeans-photo.jpg
+            <img src="jeans-photo.jpg" alt="Jeans" />
+          -->
+          <div class="card-img-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg>
+            jeans-photo.jpg
+          </div>
+          <div class="swatches">
+            <div class="sw sw-light" style="background:#D4C4A0" title="Beige"></div>
+            <div class="sw" style="background:#5C3D1E" title="Brown"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="card-name">Jeans</p>
+          <p class="card-sub">Beige · Brown · Wide leg</p>
+          <div class="card-footer">
+            <span class="card-price">EGP 950</span>
+            <a class="card-cta" href="#order">Order →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── JACQUARD POLO ── -->
+      <div class="card">
+        <div class="card-img">
+          <!--
+            PHOTO: polo-photo.jpg
+            <img src="polo-photo.jpg" alt="Jacquard Polo" />
+          -->
+          <div class="card-img-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg>
+            polo-photo.jpg
+          </div>
+          <div class="swatches">
+            <div class="sw sw-light" style="background:#EDE8DF" title="Off-white"></div>
+            <div class="sw" style="background:#1A2A4A" title="Navy"></div>
+            <div class="sw" style="background:#7A8A9A" title="Grey"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="card-name">Jacquard Polo</p>
+          <p class="card-sub">Off-white · Navy · Grey</p>
+          <div class="card-footer">
+            <span class="card-price">EGP 400</span>
+            <a class="card-cta" href="#order">Order →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── RINGER TEE ── -->
+      <div class="card">
+        <div class="card-img">
+          <!--
+            PHOTO: ringer-photo.jpg
+            <img src="ringer-photo.jpg" alt="Ringer Tee" />
+          -->
+          <div class="card-img-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg>
+            ringer-photo.jpg
+          </div>
+          <div class="swatches">
+            <div class="sw" style="background:#5C1A26" title="Burgundy"></div>
+            <div class="sw" style="background:#2D4A2D" title="Forest green"></div>
+            <div class="sw sw-light" style="background:#F2EDE6" title="White"></div>
+            <div class="sw" style="background:#1A1A1A" title="Black"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="card-name">Ringer Tee</p>
+          <p class="card-sub">Burgundy · Forest green · White · Black</p>
+          <div class="card-footer">
+            <span class="card-price">EGP 400</span>
+            <a class="card-cta" href="#order">Order →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── HENLEY ── -->
+      <div class="card">
+        <div class="card-img">
+          <!--
+            PHOTO: henley-photo.jpg
+            <img src="henley-photo.jpg" alt="Henley" />
+          -->
+          <div class="card-img-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg>
+            henley-photo.jpg
+          </div>
+          <div class="swatches">
+            <div class="sw sw-light" style="background:#EDE8DF" title="Off-white"></div>
+            <div class="sw" style="background:#7A8A9A" title="Grey"></div>
+            <div class="sw" style="background:#1A2A4A" title="Navy"></div>
+            <div class="sw" style="background:#1A1A1A" title="Black"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="card-name">Henley</p>
+          <p class="card-sub">Off-white · Grey · Navy · Black</p>
+          <div class="card-footer">
+            <span class="card-price">EGP 400</span>
+            <a class="card-cta" href="#order">Order →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CREWNECK ── -->
+      <div class="card">
+        <div class="card-img">
+          <!--
+            PHOTO: crewneck-photo.jpg
+            <img src="crewneck-photo.jpg" alt="Crewneck" />
+          -->
+          <div class="card-img-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg>
+            crewneck-photo.jpg
+          </div>
+          <span class="card-tag tag-new">New</span>
+          <div class="swatches">
+            <div class="sw" style="background:#1A1A1A" title="Black"></div>
+            <div class="sw" style="background:#D4849A" title="Pink"></div>
+            <div class="sw sw-light" style="background:#EDE8DF" title="Off-white"></div>
+            <div class="sw" style="background:#5C3D1E" title="Brown"></div>
+            <div class="sw sw-light" style="background:#F2EDE6" title="White"></div>
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="card-name">Crewneck</p>
+          <p class="card-sub">Black · Pink · Off-white · Brown · White</p>
+          <div class="card-footer">
+            <span class="card-price">EGP 700</span>
+            <a class="card-cta" href="#order">Order →</a>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /product-grid -->
+  </section>
+
+  <!-- ─── LEATHER FEATURE ─── -->
+  <section id="about" class="feature">
+    <div class="feature-visual">
+      <!--
+        ╔═══════════════════════════════════════════════════════╗
+        ║  FEATURE PHOTO — REPLACE BELOW                       ║
+        ║  Best shot: burgundy leather jacket editorial.       ║
+        ║  <img src="feature-photo.jpg" alt="Leather drop" /> ║
+        ╚═══════════════════════════════════════════════════════╝
+      -->
+      <div class="feature-visual-placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.7"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 4 0v2"/><circle cx="12" cy="13" r="3"/></svg>
+      </div>
+    </div>
+
+    <div class="feature-text">
+      <p class="eyebrow">The leather drop</p>
+      <h2 class="feature-title">Statements<br>made in<br><em>leather.</em></h2>
+      <p class="feature-body">Four colorways, one silhouette. The jacket that defines the drop — unisex cut, drop-shoulder fit. Shot in Cairo against the walls that remember everything.</p>
+      <p class="color-label-row">Available in</p>
+      <div class="colors-row">
+        <div class="color-chip"><div class="color-dot" style="background:#5C1A26"></div><span>Burgundy</span></div>
+        <div class="color-chip"><div class="color-dot" style="background:#1A1A1A"></div><span>Black</span></div>
+        <div class="color-chip"><div class="color-dot" style="background:#E8D8C0;border-color:rgba(242,237,230,0.5)"></div><span>Beige</span></div>
+        <div class="color-chip"><div class="color-dot" style="background:#3B4A2E"></div><span>Olive</span></div>
+      </div>
+      <a class="btn-primary" href="#order" style="align-self:flex-start">Order this piece</a>
+    </div>
+  </section>
+
+  <!-- ─── ORDER ─── -->
+  <section id="order" class="order">
+    <div>
+      <h2 class="order-title">How to<br><em>order</em></h2>
+      <p class="order-body">We keep it simple. No checkout friction, no bots — just a real conversation about what you want.</p>
+      <div class="steps">
+        <div class="step">
+          <span class="step-num">1</span>
+          <div class="step-text">
+            <p>Pick your piece</p>
+            <p>Browse the collection, note the item name and colorway you want.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">2</span>
+          <div class="step-text">
+            <p>DM us on Instagram</p>
+            <p>Send us your size, color, and Cairo delivery address.</p>
+          </div>
+        </div>
+        <div class="step">
+          <span class="step-num">3</span>
+          <div class="step-text">
+            <p>Confirm &amp; receive</p>
+            <p>We confirm availability and arrange delivery or pickup.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="order-ctas">
+      <!--
+        ✏ REPLACE the href values:
+        WhatsApp:  https://wa.me/20XXXXXXXXXX  (your Egyptian number, no + or spaces)
+        Instagram: https://www.instagram.com/grails.eg
+      -->
+      <a class="btn-whatsapp" href="https://wa.me/20XXXXXXXXXX" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.558 4.122 1.534 5.858L0 24l6.335-1.524A11.954 11.954 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.007-1.371l-.36-.214-3.724.976.995-3.624-.235-.372A9.818 9.818 0 1 1 12 21.818z"/></svg>
+        Order on WhatsApp
+      </a>
+      <a class="btn-instagram" href="https://www.instagram.com/grails.eg" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        DM on Instagram
+      </a>
+      <p class="order-note">We reply within a few hours. Orders confirmed once availability is verified. Cairo delivery available.</p>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <div class="footer-wm">GRAILS.EG</div>
+    <div class="footer-links">
+      <a href="#">Size chart</a>
+      <a href="#">Policy</a>
+      <a href="https://www.instagram.com/grails.eg" target="_blank">Instagram</a>
+      <a href="https://www.tiktok.com/@grails59" target="_blank">TikTok</a>
+    </div>
+    <div class="footer-right">Cairo · Egypt 🇪🇬</div>
+  </footer>
+
+  <script>
+    // Filter buttons (visual only — no content hidden)
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+  </script>
+
+</body>
+</html>
